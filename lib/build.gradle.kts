@@ -1,5 +1,5 @@
 group = "org.ayo"
-version = "0.1.0"
+version = "0.0.1"
 
 val ktorVersion = "1.5.0"
 val fuelVersion  = "2.3.1"
