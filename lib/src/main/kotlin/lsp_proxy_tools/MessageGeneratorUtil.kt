@@ -92,7 +92,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
                 "            \"documentSelector\": [\n" +
                 "                \"$documentSelector\"\n" +
                 "            ],\n" +
-                "            ${capabilities.joinToString(separator = ",\n", postfix = ",\n")}" +
+                "            ${capabilities.joinToString(separator = ",\n")}" +
                 "        },\n" +
                 "        \"initialization_options\": {},\n" +
                 "        \"rootUri\": \"$baseUri\"\n" +
