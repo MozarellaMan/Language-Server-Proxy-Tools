@@ -1,5 +1,5 @@
 group = "com.github.MozarellaMan"
-version = "0.0.1"
+version = "0.0.12"
 
 val ktorVersion = "1.5.0"
 val fuelVersion  = "2.3.1"
