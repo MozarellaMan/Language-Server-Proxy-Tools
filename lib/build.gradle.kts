@@ -45,7 +45,6 @@ dependencies {
     implementation ("io.ktor:ktor-client-websockets:$ktorVersion")
     implementation ("io.ktor:ktor-client-cio:$ktorVersion")
     implementation ("com.google.code.gson:gson:2.8.6")
-    implementation ("org.apache.commons:commons-text:1.9")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     api("org.apache.commons:commons-math3:3.6.1")

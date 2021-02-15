@@ -6,3 +6,10 @@ The goal of this library is to enable you to have an easy-to-use interface with 
 ## How to Test
 
 -- todo
+
+## Dependencies
+
+- Eclipse LSP4J
+- KotlinX Serialization
+- Fuel
+- Gson
