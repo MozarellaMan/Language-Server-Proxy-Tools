@@ -1,4 +1,4 @@
-group = "org.ayo"
+group = "com.github.MozarellaMan"
 version = "0.0.1"
 
 val ktorVersion = "1.5.0"
@@ -8,6 +8,7 @@ plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.20"
     kotlin("plugin.serialization") version "1.4.10"
+    id("maven-publish")
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
 }
