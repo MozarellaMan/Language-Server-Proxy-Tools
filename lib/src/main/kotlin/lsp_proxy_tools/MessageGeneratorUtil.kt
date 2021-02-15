@@ -8,14 +8,14 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1) {
     private val gson = Gson()
     private val fileVersionMap = mutableMapOf<String, Int>()
-    private val initialized = NotificationMessage().apply {
+    val initialized = NotificationMessage().apply {
         method = "initialized"
         params = InitializedParams().apply {
         }
     }
 
     fun initialized(): String {
-        return this.initialized.toString()
+        return gson.toJson(initialized)
     }
 
     fun didCreateFiles(filePath: String, fileName: String): String {
