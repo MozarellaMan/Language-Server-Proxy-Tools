@@ -25,10 +25,16 @@ data class FileNode(
     }
 
     fun getPath(root: FileNode): String {
-        return if (this.path.startsWith("${root.path}/")) {
-            this.path.removePrefix("${root.path}/")
-        } else {
-            this.path.removePrefix("${root.path}\\")
+        return when {
+            this.path.startsWith("${root.path}/") -> {
+                this.path.removePrefix("${root.path}/")
+            }
+            this.path == root.path -> {
+                this.path
+            }
+            else -> {
+                this.path.removePrefix("${root.path}\\")
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             method = "workspace/didCreateFiles"
             params = CreateFilesParams().apply {
                 files = listOf(FileCreate().apply {
-                    uri = "$baseUri/$filePath/$fileName"
+                    uri = "$filePath/$fileName"
                 })
             }
         }

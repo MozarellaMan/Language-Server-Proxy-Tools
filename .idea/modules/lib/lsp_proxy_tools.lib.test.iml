@@ -58,5 +58,4 @@
     <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:1.5.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-io-jvm:1.5.0" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="lsp_proxy_tools.lib.main" />
 </module>
