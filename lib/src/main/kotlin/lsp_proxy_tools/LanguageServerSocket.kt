@@ -14,6 +14,12 @@ import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 
+/**
+ * Starts a websocket session, connecting to the language server proxy
+ *
+ * @param address of the language server proxy
+ * @return the websocket session
+ */
 suspend fun StartLanguageServerSession(address: String): DefaultClientWebSocketSession {
     val client = HttpClient(CIO) {
         install(WebSockets)
@@ -26,6 +32,12 @@ suspend fun StartLanguageServerSession(address: String): DefaultClientWebSocketS
     )
 }
 
+/**
+ * Parses a Diagnostic lsp4j object from a Json message
+ *
+ * @param element a Kotlinx Serialization Json object
+ * @return the Diagnostic object
+ */
 fun parseDiagnosticJson(element: JsonElement): Diagnostic {
     val diagnostic = element.jsonObject
     val range = diagnostic["range"]?.jsonObject
