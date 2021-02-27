@@ -6,11 +6,11 @@ import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 
 /**
- * A class for generating useful LSP messages to create basic functionality for a client.
+ * Message generator util
  *
- * @property baseUri the root directory as uri used to initialise the language server
- * @property id the starting id of the messages being generated. Defaults to -1, so that the first message has an id of 0
- * @constructor Create MessageGeneratorUtil object
+ * @property baseUri
+ * @property id
+ * @constructor Create empty Message generator util
  */
 class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1) {
     private val gson = Gson()
@@ -22,20 +22,20 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
     }
 
     /**
-     * Creates an "initialized" notification to send to the server as acknowledgment.
+     * Initialized
      *
-     * @return an initialized message
+     * @return
      */
     fun initialized(): String {
         return gson.toJson(initialized)
     }
 
     /**
-     * Creates a "workspace/didCreateFiles" notification to send to a server
+     * Did create files
      *
      * @param filePath
      * @param fileName
-     * @return json message as string
+     * @return
      */
     fun didCreateFiles(filePath: String, fileName: String): String {
         val notification = NotificationMessage().apply {
@@ -50,11 +50,11 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
     }
 
     /**
-     * Creates a "textDocument/didChange" notification to send to a server
+     * Text did change
      *
-     * @param filePath path to the file being changed
-     * @param content full content of the new files
-     * @return json message as string
+     * @param filePath
+     * @param content
+     * @return
      */
     fun textDidChange(filePath: String, content: String): String {
         val prevVersion = fileVersionMap[filePath] ?: 0
@@ -76,11 +76,11 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
     }
 
     /**
-     * Creates a "textDocument/didOpen" notification to send to a server
+     * Text doc open
      *
-     * @param filePath path to the file being opened
-     * @param content of the file that was opened
-     * @return json message as string
+     * @param filePath
+     * @param content
+     * @return
      */
     fun textDocOpen(filePath: String, content: String): String {
         var versionId = fileVersionMap.getOrPut(filePath, { 0 })
@@ -103,8 +103,8 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
     /**
      * Text doc close
      *
-     * @param filePath path to the file being closed
-     * @return json message as string
+     * @param filePath
+     * @return
      */
     fun textDocClose(filePath: String): String {
         var versionId = fileVersionMap.getOrPut(filePath, { 0 })
@@ -122,11 +122,11 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
     }
 
     /**
-     * Creates an "initialize" message to send to a server
+     * Initialize
      *
-     * @param capabilities list of capabilities specified for the server
-     * @param documentSelector identifies the scope of registration to the server
-     * @return json message as string
+     * @param capabilities
+     * @param documentSelector
+     * @return
      */
     fun initialize(capabilities: List<String>, documentSelector: String): String {
         return "{\n" +
@@ -161,6 +161,24 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             }
         }
         return gson.toJsonTree(refresh).asJsonObject.apply {
+            addProperty("id", "${++id}")
+        }.toString()
+    }
+
+    /**
+     * Request semantic tokens for full file
+     *
+     * @param filePath path to the file being checked for tokens
+     * @return json message as string
+     */
+    fun requestSemanticTokens(filePath: String): String {
+        val req = RequestMessage().also {
+            it.method = "textDocument/semanticTokens/full"
+            it.params = TextDocumentIdentifier().apply {
+                uri = "$baseUri/$filePath"
+            }
+        }
+        return gson.toJsonTree(req).asJsonObject.apply {
             addProperty("id", "${++id}")
         }.toString()
     }
