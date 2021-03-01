@@ -182,4 +182,42 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             addProperty("id", "${++id}")
         }.toString()
     }
+
+
+    /**
+    * Request semantic token legend for java (java jdt language server specific)
+    *
+    * @return id and json message as string pair
+    */
+    fun javaSemanticTokenLegend(): Pair<Int, String> {
+        val semanticTokenLegend = RequestMessage().also {
+            it.method = "workspace/executeCommand"
+            it.params = ExecuteCommandParams().apply {
+                command = "java.project.getSemanticTokensLegend"
+            }
+        }
+        return Pair(++id, gson.toJsonTree(semanticTokenLegend).asJsonObject.apply {
+            addProperty("id","$id")
+        }.toString())
+    }
+
+    /**
+     * Request semantic tokens for full file (java jdt language server specific)
+     *
+     * @param filePath path to the file being checked for tokens
+     * @return json message as string
+     */
+    fun javaSemanticTokens(filePath: String): String {
+        val semanticTokens = RequestMessage().also {
+            it.method = "workspace/executeCommand"
+            it.params = ExecuteCommandParams().apply {
+                command = "java.project.provideSemanticTokens"
+                arguments = listOf("$baseUri/$filePath")
+            }
+        }
+        return gson.toJsonTree(semanticTokens).asJsonObject.apply {
+            addProperty("id","${++id}")
+        }.toString()
+    }
+
 }

@@ -51,7 +51,6 @@ class DefaultClient(private val rootUri: String, val outgoingSocket: SendChannel
     }
 
     private suspend fun defaultHandler(lspMessage: String) {
-
         when {
             lspMessage.contains("language/status") && lspMessage.contains("Ready") && !initialized -> {
                 outgoingSocket.send(Frame.Text(gson.toJson(messageGeneratorUtil.initialized())))
