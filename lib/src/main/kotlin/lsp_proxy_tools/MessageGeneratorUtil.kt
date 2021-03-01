@@ -9,10 +9,10 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
  * Message generator util
  *
  * @property baseUri
- * @property id
+ * @property currentId
  * @constructor Create empty Message generator util
  */
-class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1) {
+class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int = -1) {
     private val gson = Gson()
     private val fileVersionMap = mutableMapOf<String, Int>()
     val initialized = NotificationMessage().apply {
@@ -130,7 +130,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
      */
     fun initialize(capabilities: List<String>, documentSelector: String): String {
         return "{\n" +
-                "    \"id\": ${++id},\n" +
+                "    \"id\": ${++currentId},\n" +
                 "    \"jsonrpc\": \"2.0\",\n" +
                 "    \"method\": \"initialize\",\n" +
                 "    \"params\": {\n" +
@@ -161,7 +161,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             }
         }
         return gson.toJsonTree(refresh).asJsonObject.apply {
-            addProperty("id", "${++id}")
+            addProperty("id", "${++currentId}")
         }.toString()
     }
 
@@ -179,7 +179,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             }
         }
         return gson.toJsonTree(req).asJsonObject.apply {
-            addProperty("id", "${++id}")
+            addProperty("id", "${++currentId}")
         }.toString()
     }
 
@@ -196,8 +196,8 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
                 command = "java.project.getSemanticTokensLegend"
             }
         }
-        return Pair(++id, gson.toJsonTree(semanticTokenLegend).asJsonObject.apply {
-            addProperty("id","$id")
+        return Pair(++currentId, gson.toJsonTree(semanticTokenLegend).asJsonObject.apply {
+            addProperty("id","$currentId")
         }.toString())
     }
 
@@ -216,7 +216,7 @@ class MessageGeneratorUtil(private var baseUri: String, private var id: Int = -1
             }
         }
         return gson.toJsonTree(semanticTokens).asJsonObject.apply {
-            addProperty("id","${++id}")
+            addProperty("id","${++currentId}")
         }.toString()
     }
 
