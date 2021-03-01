@@ -207,7 +207,7 @@ class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int
      * @param filePath path to the file being checked for tokens
      * @return json message as string
      */
-    fun javaSemanticTokens(filePath: String): String {
+    fun javaSemanticTokens(filePath: String): Pair<Int,String> {
         val semanticTokens = RequestMessage().also {
             it.method = "workspace/executeCommand"
             it.params = ExecuteCommandParams().apply {
@@ -215,9 +215,9 @@ class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int
                 arguments = listOf("$baseUri/$filePath")
             }
         }
-        return gson.toJsonTree(semanticTokens).asJsonObject.apply {
-            addProperty("id","${++currentId}")
-        }.toString()
+        return Pair(++currentId, gson.toJsonTree(semanticTokens).asJsonObject.apply {
+            addProperty("id","$currentId")
+        }.toString())
     }
 
 }
