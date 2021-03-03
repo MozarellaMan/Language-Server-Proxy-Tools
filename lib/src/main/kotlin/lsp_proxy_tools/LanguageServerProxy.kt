@@ -1,6 +1,7 @@
 package lsp_proxy_tools
 
 import com.github.kittinunf.fuel.core.FuelError
+import io.ktor.http.cio.websocket.*
 
 /**
  * Creates a Language Server Proxy access object.
@@ -62,7 +63,7 @@ class LanguageServerProxy(private val address: String) {
      * @param path to file relative to root
      * @return outputs of execution (including errors) or error message
      */
-    suspend fun runFile(path: String): String {
+    suspend fun runFile(path: String): DefaultWebSocketSession {
         return runFile(address, path)
     }
 
