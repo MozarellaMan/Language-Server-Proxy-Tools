@@ -5,6 +5,10 @@ import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.coroutines.awaitObjectResponseResult
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import com.github.kittinunf.fuel.serialization.kotlinxDeserializerOf
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.websocket.*
+import io.ktor.http.*
 
 private fun errorMessage(error: FuelError): String {
     return "An error of type ${error.exception} happened: ${error.message}, ${error.response}"
@@ -99,17 +103,17 @@ suspend fun getRootUri(address: String): String {
  *
  * @param address of the proxy server
  * @param path to the file relative to root
- * @return returns program's errors and/or output, or an error message
+ * @return a websocket session
  */
-suspend fun runFile(address: String, path: String): String {
-    val (_, _, result) = Fuel.get("http://$address/code/run/$path")
-            .awaitStringResponseResult()
-    return result.fold(
-            { data -> data },
-            { error ->
-                println(errorMessage(error))
-                proxyError(error)
-            }
+suspend fun runFile(address: String, path: String): DefaultClientWebSocketSession {
+    val client = HttpClient(CIO) {
+        install(WebSockets)
+    }
+    val (host, port) = address.split(':', limit = 2)
+    return client.webSocketSession(
+        method = HttpMethod.Get,
+        host = host,
+        port = port.toIntOrNull() ?: 0, path = "/code/run/$path"
     )
 }
 
