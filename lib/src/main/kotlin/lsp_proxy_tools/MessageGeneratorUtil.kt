@@ -143,7 +143,7 @@ class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int
                 "        \"initializationOptions\": {\n" +
                 "            \"workspaceFolders\": [\n" +
                 "              \"$baseUri\"" +
-                "            ],\n" +
+                "            ]\n" +
                 "        }\n" +
                 "    }\n" +
                 "}"
