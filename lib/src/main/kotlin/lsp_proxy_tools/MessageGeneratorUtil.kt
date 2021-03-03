@@ -140,8 +140,11 @@ class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int
                 "            ],\n" +
                 "            ${capabilities.joinToString(separator = ",\n")}" +
                 "        },\n" +
-                "        \"initialization_options\": {},\n" +
-                "        \"rootUri\": \"$baseUri\"\n" +
+                "        \"initializationOptions\": {\n" +
+                "            \"workspaceFolders\": [\n" +
+                "              \"$baseUri\"" +
+                "            ],\n" +
+                "        }\n" +
                 "    }\n" +
                 "}"
     }
