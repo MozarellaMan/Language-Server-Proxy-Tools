@@ -12,7 +12,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
  * @property currentId
  * @constructor Create empty Message generator util
  */
-class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int = -1) {
+class MessageGeneratorUtil(var baseUri: String, var currentId: Int = -1) {
     private val gson = Gson()
     private val fileVersionMap = mutableMapOf<String, Int>()
     val initialized = NotificationMessage().apply {
@@ -184,6 +184,27 @@ class MessageGeneratorUtil(public var baseUri: String, public var currentId: Int
         return gson.toJsonTree(req).asJsonObject.apply {
             addProperty("id", "${++currentId}")
         }.toString()
+    }
+
+    /**
+     * Request hover information
+     *
+     * @param filePath path to the file being checked for tokens
+     * @return json message as string
+     */
+    fun requestHover(filePath: String, line: Int, character: Int): Pair<Int, String> {
+        val req = RequestMessage().also {
+            it.method = "textDocument/hover"
+            it.params = HoverParams().apply {
+                textDocument = TextDocumentIdentifier().apply {
+                    uri = "$baseUri/$filePath"
+                }
+                position = Position(line, character)
+            }
+        }
+        return Pair(++currentId, gson.toJsonTree(req).asJsonObject.apply {
+            addProperty("id","$currentId")
+        }.toString())
     }
 
 
