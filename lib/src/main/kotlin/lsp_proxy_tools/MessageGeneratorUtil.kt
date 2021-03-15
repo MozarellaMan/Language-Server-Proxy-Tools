@@ -12,7 +12,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
  * @property currentId
  * @constructor Create empty Message generator util
  */
-class MessageGeneratorUtil(var baseUri: String, var currentId: Int = -1) {
+class MessageGeneratorUtil(var baseUri: String, var currentId: Int = -1, var languageId: String = "java") {
     private val gson = Gson()
     private val fileVersionMap = mutableMapOf<String, Int>()
     val initialized = NotificationMessage().apply {
@@ -78,8 +78,8 @@ class MessageGeneratorUtil(var baseUri: String, var currentId: Int = -1) {
     /**
      * Text doc open
      *
-     * @param filePath
-     * @param content
+     * @param filePath path to file
+     * @param content content of file
      * @return
      */
     fun textDocOpen(filePath: String, content: String): String {
@@ -89,9 +89,34 @@ class MessageGeneratorUtil(var baseUri: String, var currentId: Int = -1) {
         val notification = NotificationMessage().apply {
             method = "textDocument/didOpen"
             params = DidOpenTextDocumentParams().apply {
+                textDocument = TextDocumentItem().also {
+                    it.uri = "$baseUri/$filePath"
+                    it.languageId = languageId
+                    it.version = versionId
+                    it.text = content
+                }
+            }
+        }
+        return gson.toJson(notification)
+    }
+    /**
+     * Text doc open
+     *
+     * @param filePath path to file
+     * @param content content of file
+     * @param langId language id e.g. "java"
+     * @return
+     */
+    fun textDocOpen(filePath: String, langId: String, content: String): String {
+        var versionId = fileVersionMap.getOrPut(filePath, { 0 })
+        versionId++
+        fileVersionMap[filePath] = versionId
+        val notification = NotificationMessage().apply {
+            method = "textDocument/didOpen"
+            params = DidOpenTextDocumentParams().apply {
                 textDocument = TextDocumentItem().apply {
                     uri = "$baseUri/$filePath"
-                    languageId = "java"
+                    languageId = langId
                     version = versionId
                     text = content
                 }

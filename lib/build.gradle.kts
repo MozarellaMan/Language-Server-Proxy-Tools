@@ -49,5 +49,6 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.6")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.skyscreamer:jsonassert:1.5.0")
     api("org.apache.commons:commons-math3:3.6.1")
 }
